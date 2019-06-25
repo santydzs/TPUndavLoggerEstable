@@ -161,7 +161,7 @@ void ULLogger::LogFatalMessage(Logger *logger, string message)
         string formatedMessage = "";
         DateTime *now = ULDateTime::Now();
         Nodo* iterador = logger->listaAppenders->nodo;
-        while (iterador->siguiente != NULL)
+        while (iterador != NULL)
         {
             if (iterador->logLevel != LogLevel::OFF)
             {
@@ -181,7 +181,7 @@ void ULLogger::LogErrorMessage(Logger *logger, string message)
         string formatedMessage = "";
         DateTime *now = ULDateTime::Now();
         Nodo* iterador = logger->listaAppenders->nodo;
-        while (iterador->siguiente != NULL)
+        while (iterador != NULL)
         {
             level = iterador->logLevel;
             if (level == LogLevel::DEBUG || level == LogLevel::WARN || level == LogLevel::INFO || level == LogLevel::TRACE || level == LogLevel::ERROR)
@@ -203,7 +203,7 @@ void ULLogger::LogWarningMessage(Logger *logger, string message)
         string formatedMessage = "";
         DateTime *now = ULDateTime::Now();
         Nodo* iterador = logger->listaAppenders->nodo;
-        while (iterador->siguiente != NULL)
+        while (iterador != NULL)
         {
             level = iterador->logLevel;
             if (level == LogLevel::DEBUG || level == LogLevel::WARN || level == LogLevel::INFO || level == LogLevel::TRACE)
@@ -224,7 +224,7 @@ void ULLogger::LogInfoMessage(Logger *logger, string message)
         string formatedMessage = "";
         DateTime *now = ULDateTime::Now();
         Nodo* iterador = logger->listaAppenders->nodo;
-        while (iterador->siguiente != NULL)
+        while (iterador != NULL)
         {
             level = iterador->logLevel;
             if (level == LogLevel::DEBUG || level == LogLevel::INFO || level == LogLevel::TRACE)
@@ -245,7 +245,7 @@ void ULLogger::LogDebugMessage(Logger *logger, string message)
         string formatedMessage = "";
         DateTime *now = ULDateTime::Now();
         Nodo* iterador = logger->listaAppenders->nodo;
-        while (iterador->siguiente != NULL)
+        while (iterador != NULL)
         {
             level = iterador->logLevel;
             if (level == LogLevel::DEBUG || level == LogLevel::TRACE)
@@ -266,7 +266,7 @@ void ULLogger::LogTraceMessage(Logger *logger, string message)
         string formatedMessage = "";
         DateTime *now = ULDateTime::Now();
         Nodo* iterador = logger->listaAppenders->nodo;
-        while (iterador->siguiente != NULL)
+        while (iterador != NULL)
         {
             level = iterador->logLevel;
             if (level == LogLevel::TRACE)
