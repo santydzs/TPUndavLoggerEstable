@@ -115,6 +115,7 @@ void ULLogger::AddAppender(Logger *logger, Appender *appender, LogLevel level)
     	}
     	if(fueReemplazado!= true){
     		logger->listaAppenders->nodo = CrearNodo(appender,logger->listaAppenders->nodo);
+    		logger->listaAppenders->nodo->logLevel = level;
     	}
     }
 }
