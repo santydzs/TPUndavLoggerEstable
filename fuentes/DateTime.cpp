@@ -95,6 +95,20 @@ string ULDateTime::DateTimeFormatAsString(DateTimeFormat format){
 	return formatString;
 }
 
+DateTimeFormat ULDateTime::DateTimeFormatFromString(string format){
+	DateTimeFormat formatString;
+	if(format == "YYYYMMDD_HHmmss") formatString=YYYYMMDD_HHmmss;
+	if(format == "YYYYMMDD_hhmmss") formatString=YYYYMMDD_hhmmss;
+	if(format == "DDMMYYYY_hhmmss") formatString=DDMMYYYY_hhmmss;
+	if(format == "DDMMYYYY_HHmmss") formatString=DDMMYYYY_HHmmss;
+	if(format == "YYYYMMDDHHmmss") formatString=YYYYMMDDHHmmss;
+	if(format == "YYMD_Hms") formatString=YYMD_Hms;
+	if(format == "YYMD_hms") formatString=YYMD_hms;
+	if(format == "DMYY_hms") formatString=DMYY_hms;
+	if(format == "DMYY_Hms") formatString=DMYY_Hms;
+	return formatString;
+}
+
 DateTime* ULDateTime::Now(){
 	tm* tiempoLocal;
 	time_t tiempo = time(0);

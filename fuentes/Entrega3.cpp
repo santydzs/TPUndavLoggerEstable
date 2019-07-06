@@ -1,103 +1,60 @@
 #include <iostream>
-#include "DateTime.h"
+#include <string>
 #include "Logger.h"
-#include "Appender.h"
-#include "AppenderSettings.h"
 #include "LoggerSettings.h"
-#include "LogLevel.h"
-#include "AppenderType.h"
+#include "DateTime.h"
+#include "Entrega3.h"
 
-using namespace std;
 using std::string;
 using namespace ULLogger;
-using namespace ULAppenderSettings;
-using namespace ULLoggerSettings;
+using ULLoggerSettings::LoggerSettings;
+using ULDateTime::DateTimeFormat;
+using std::cout;
+using std::endl;
 
-int ContarApariciones(string texto, string subtexto);
+string GetAttributeValue(string elementoXml, string nombreAtributo){
+	int largoAtributo = nombreAtributo.length();
+	int atributoInicio = elementoXml.find(nombreAtributo + "=\"");
+	int comienzoValue = atributoInicio + largoAtributo + 2;
+	string auxElementoXml = elementoXml.substr(comienzoValue, elementoXml.length());
+	int finalValue = auxElementoXml.find("\"");
+	return elementoXml.substr(comienzoValue,finalValue);
+}
 
-int IndiceAparicion(char* texto, char* subtexto, int n);
 
-// Precondicion: @xmlLoggerSetting es un xml bien formado y valido para la configuracion de ULLlogger
-// Postcondicion: Devuelve una instacia valida de Logger que tiene la configuracion dada en @xmlLoggerSetting
-Logger* BuildLogger(string xmlLoggerSetting);
+string GetLogger(string elementoXml){
+	int largoLogger = 6; //es el largo de la cadena "logger" + 1
+	int comiezoLogger = elementoXml.find("logger");
+	string auxElementoXml = elementoXml.substr(comiezoLogger + largoLogger, elementoXml.length());
+	int finalEtiqueta = elementoXml.find(">");
+	return elementoXml.substr(comiezoLogger,finalEtiqueta - 1);
+}
 
-// Precondicion: si el archivo existe y tiene un elemento <logger>, ese elemento representa un xml valido para la configuracion de logger.
-// Postcondicion: si el archivo en @pathConfigFile busca el contenido del tag <logger> y devuelve la instancia valida que representa esa configuracion.
-// Si el archivo no existe o no tiene el tag <logger> devuelve NULL
-Logger* BuildLoggerFromConfigFile(string pathConfigFile);
+string GetContent(string elementoXml){
+	int inicioContent = elementoXml.find("\">") + 2;
+	int finalContent =elementoXml.find("/>");
+	cout<<finalContent<<endl;
+	return elementoXml.substr(inicioContent,finalContent);
+}
 
-void TestLogger(Logger* logger);
-
-int ContarCaracteres(const string texto){
+LoggerSettings* CreateLoggerSetting(string xmlLoggerSetting){
+	string loggerEtiqueta = GetLogger(xmlLoggerSetting);
+	string dateTimeFormat = GetAttributeValue(loggerEtiqueta, "dateTimeFormat");
+	DateTimeFormat Format = ULDateTime::DateTimeFormatFromString(dateTimeFormat);
+	LoggerSettings* logger = ULLoggerSettings::Create(Format);
+	string contenido = GetContent(xmlLoggerSetting);
+	cout<<contenido<<endl;
+	//cout<<ULLoggerSettings::ToXml(logger)<<endl;
 	return 0;
 }
 
-int ContarAppenderSettings(string elementoXml) {
-    ContarApariciones(elementoXml, "<appender");
-    // Cuento las apariciones de appender por ejemplo
+Logger* CreateLogger(LoggerSettings* setting){
 }
 
-int IndexOf(const string texto, const string textoBusqueda, int indice) {
-    int caracteresTexto = ContarCaracteres(texto);
-    int caracteresBusqueda = ContarCaracteres(textoBusqueda);
-    for(int i = indice; i < caracteresTexto-caracteresBusqueda; ++i) {
-        int j;
-        for (j = 0; j < caracteresBusqueda; j++)
-            if(texto[i+j] != textoBusqueda[j]) break;
-        if(j==caracteresBusqueda) return i;
-    }
+Logger* BuildLoggerFromConfigFile(string pathConfigFile){
+
 }
 
-string GetAttributeValue(string elementoXml, string nombreAtributo){
-	//string texto = "<logger dateTimeFormat=\"YYMD_hms\" />";
-    //string substring = "dateTimeFormat=\"";
-    int largoSub = nombreAtributo.length();
-    int comienzoString = elementoXml.find(nombreAtributo);
-    int comienzoValor = comienzoString+largoSub;
-    string aux_sub = elementoXml.substr(comienzoValor, elementoXml.length());
-    int indiceFinal = aux_sub.find("\"");
-    //cout<< aux_sub.substr(0,indiceFinal);
-
-    return 0;
-}
-
-AppenderSettings* GetAppenderSetting(string elementoXml, int numeroAppender) {
-    // retorno el appender correspondiente al numeroAppender que me envian como parametro
-}
-
-LoggerSettings* GetLoggerSetting(string elementoXml) {
-    LoggerSettings* logger = ULLoggerSettings::Create(ULDateTime::DDMMYYYY_HHmmss); // creo el logger de tipo LoggerSetting
-    string dateTimeFormat = ULDateTime::DateTimeFormatAsString(ULLogger::ObtenerDatetimeFormat(logger));// retorno el valor del dateTimeFormat
-    int cantidadAppender = ContarAppenderSettings(elementoXml); // retorno la cantidad de appernders que tiene el string xml
-    for(int i=0; i<cantidadAppender; ++i) { // Recorro la cantidad de appenders que obtengo arriba
-        int indice = IndexOf(elementoXml, '<appender', indice);
-        AddAppenderSetting(logger, GetAppenderSetting(elementoXml, indice)); //Añado los appender al logger, en el segundo parametro del get tiene que ir un indice
-        // getAppenderSetting obtiene el appender correspondiente al indice que le envio
-        //para saber a partir de donde tiene que buscar los distintos elementos
-        // aca iria un indexof con indice para arrancar a buscar a partir del indice, es decir desde que se encontro la anterior aparicion
-    }
-}
-
-int main() {
-    string settings = "<logger dateTimeFormat=\"YYMD_Hms\">\n\t<appender type=\"console\" logLevel=\"INFO\"/>\n\t<appender type=\"file\" logLevel=\"DEBUG\" path=\"logFile1.log\"/>\n</logger>";
-    cout<<settings<<endl;
-    Logger* logger1 = BuildLogger(settings);
-    Logger* logger2 = BuildLoggerFromConfigFile("config.txt");
-}
-
-void TestLogger(Logger* logger) {
-    LogFatalMessage(logger, "Log 1 ");
-    LogErrorMessage(logger, "Log 2 ");
-    LogWarningMessage(logger, "Log 3 ");
-    LogDebugMessage(logger, "Log 4 ");
-    LogTraceMessage(logger, "Log 5 ");
-    LogInfoMessage(logger, "Log 6 ");
-}
-
-Logger* BuildLogger(string xmlLoggerSetting) {
-    return 0;
-}
-
-Logger* BuildLoggerFromConfigFile(string pathConfigFile) {
-    // Tengo que buscar dentro del archivvo con direccion pathConfigFile la etiqueta logger y devolver un logger con dicha configuracion
+Logger* ULEntrega::BuildLogger(string xmlLoggerSetting){
+	return CreateLogger(CreateLoggerSetting(xmlLoggerSetting));
 }

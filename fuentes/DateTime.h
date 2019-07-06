@@ -62,6 +62,8 @@ namespace ULDateTime{
 
 	string DateTimeFormatAsString(DateTimeFormat format);
 
+	DateTimeFormat DateTimeFormatFromString(string format);
+
 	// Precondicion: @dateTime es una instancia válida
 	// Postcondicion: Devuelve el año de @dateTime.
 	void Destroy(DateTime* dateTime);

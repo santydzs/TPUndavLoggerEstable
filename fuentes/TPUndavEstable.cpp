@@ -6,6 +6,7 @@
 #include "LoggerSettings.h"
 #include "LogLevel.h"
 #include "AppenderType.h"
+#include "Entrega3.h"
 
 using namespace std;
 using namespace ULLogger;
@@ -23,8 +24,17 @@ void PruebasLoggerDebug();
 void PruebasLoggerTrace();
 
 int main() {
-	PruebasLogger();
-	PruebasSettings();
+	/*PruebasLogger();
+	PruebasSettings();*/
+	string settings =
+			"<logger dateTimeFormat=\"YYMD_Hms\">"
+				"\n\t<appender type=\"console\" logLevel=\"INFO\"/>"
+				"\n\t<appender type=\"file\" logLevel=\"DEBUG\" path=\"logFile1.log\"/>"
+			"\n</logger>";
+	//cout<<settings<<endl;
+	Logger* logger1 = ULEntrega::BuildLogger(settings);
+	//Logger* logger2 = BuildLoggerFromConfigFile("config.txt");
+
 }
 
 void PruebasSettings(){
