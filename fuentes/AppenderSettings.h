@@ -32,6 +32,7 @@ namespace ULAppenderSettings{
 
 	string GetLogLevelAsString(const AppenderSettings* settings);
 
+	LogLevel GetLogLevelFromString(const string level);
 	/*
 	 * Precondicion: @setting es una instancia valida
 	 * Postcondicion: Devuelve el AppenderType que tiene asociado @settings
@@ -39,6 +40,8 @@ namespace ULAppenderSettings{
 	AppenderType GetAppenderType(const AppenderSettings* settings);
 
 	string GetAppenderTypeAsString(const AppenderSettings* settings);
+
+	AppenderType GetAppenderTypeFromString(const string type);
 
 	/*
 	 * Precondicion: @setting es una instancia valida

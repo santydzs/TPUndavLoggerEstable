@@ -75,6 +75,18 @@ string ULAppenderSettings::GetLogLevelAsString(const AppenderSettings* settings)
 	return level;
 }
 
+LogLevel ULAppenderSettings::GetLogLevelFromString(const string level){
+	LogLevel loglevel;
+	if(level=="FATAL") loglevel = FATAL;
+	if(level=="OFF") loglevel = OFF;
+	if(level=="ERROR") loglevel = ERROR;
+	if(level=="WARN") loglevel = WARN;
+	if(level=="INFO") loglevel = INFO;
+	if(level=="DEBUG") loglevel = DEBUG;
+	if(level=="TRACE") loglevel = TRACE;
+	return loglevel;
+}
+
 string ULAppenderSettings::GetAppenderTypeAsString(const AppenderSettings* settings){
 	string type;
 	switch(settings->type){
@@ -86,4 +98,11 @@ string ULAppenderSettings::GetAppenderTypeAsString(const AppenderSettings* setti
 			break;
 	}
 	return type;
+}
+
+AppenderType ULAppenderSettings::GetAppenderTypeFromString(const string type){
+	AppenderType appenderType;
+	if(type == "console") appenderType = Console;
+	if(type == "file") appenderType = File;
+	return appenderType;
 }

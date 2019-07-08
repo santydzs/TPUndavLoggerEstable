@@ -37,6 +37,8 @@ namespace ULLoggerSettings{
 	 * Postcondicion: Libera todos los recursos asociados de @setting
 	 */
 	void Destroy(LoggerSettings* setting);
+
+	DateTimeFormat ObtenerDateTimeFormat(LoggerSettings* setting);
 }
 
 #endif

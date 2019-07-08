@@ -88,3 +88,7 @@ void ULLoggerSettings::Destroy(LoggerSettings* setting){
 	}
 	delete setting;
 }
+
+DateTimeFormat ULLoggerSettings::ObtenerDateTimeFormat(LoggerSettings* setting){
+	return setting->DateFormat;
+}
