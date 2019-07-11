@@ -7,6 +7,8 @@
 #include "AppenderSettings.h"
 #include "LogLevel.h"
 #include "AppenderType.h"
+#include "Appender.h"
+#include "AppenderType.h"
 
 using std::string;
 using namespace ULLogger;
@@ -15,6 +17,7 @@ using ULDateTime::DateTimeFormat;
 using std::cout;
 using std::endl;
 using ULAppenderSettings::AppenderSettings;
+using ULAppender::Appender;
 
 string GetAttributeValue(string elementoXml, string nombreAtributo){
 	int largoAtributo = nombreAtributo.length();
@@ -105,21 +108,32 @@ LoggerSettings* CreateLoggerSetting(string xmlLoggerSetting){
 	string contenido = GetContent(xmlLoggerSetting);
 	while(SearchAtribute(xmlLoggerSetting,"appender")){
 		string appender = GetAppender(&xmlLoggerSetting);
-		cout<<appender<<endl;
 		AppenderSettings* appenderr = ParseAppender(appender);
 		ULLoggerSettings::AddAppenderSetting(logger,appenderr);
 	}
-	cout<<ULLoggerSettings::ToXml(logger)<<endl;
 	return logger;
 }
 
 Logger* CreateLogger(LoggerSettings* setting){
 	Logger* logger = ULLogger::Create(ULLoggerSettings::ObtenerDateTimeFormat(setting));
+	while(!ULLoggerSettings::SinAppenderSettings(setting)){
+		AppenderSettings* item = ULLoggerSettings::QuitarAppenderSetting(setting);
+		Appender* nuevoApp = 0;
+		if(ULAppenderSettings::GetAppenderType(item) == Console){
+			nuevoApp = ULAppender::CreateConsoleAppender();
+		}
+		else{
+			nuevoApp = ULAppender::CreateFileAppender(ULAppenderSettings::GetPathFile(item));
+		}
+		LogLevel loglevel = ULAppenderSettings::GetLogLevel(item);
+		ULLogger::AddAppender(logger,nuevoApp,loglevel);
+		delete item;
+	}
 	return logger;
 }
 
 Logger* BuildLoggerFromConfigFile(string pathConfigFile){
-
+	return 0;
 }
 
 Logger* ULEntrega::BuildLogger(string xmlLoggerSetting){

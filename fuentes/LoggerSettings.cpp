@@ -92,3 +92,18 @@ void ULLoggerSettings::Destroy(LoggerSettings* setting){
 DateTimeFormat ULLoggerSettings::ObtenerDateTimeFormat(LoggerSettings* setting){
 	return setting->DateFormat;
 }
+
+bool ULLoggerSettings::SinAppenderSettings(LoggerSettings* setting){
+	return setting->listaAppenderSettings->primero == 0;
+}
+
+AppenderSettings* ULLoggerSettings::QuitarAppenderSetting(LoggerSettings* setting){
+	AppenderSettings* itemQuitar = 0;
+	if(!ULLoggerSettings::SinAppenderSettings(setting)){
+		itemQuitar = setting->listaAppenderSettings->primero->item;
+		Nodo* aux = setting->listaAppenderSettings->primero;
+		setting->listaAppenderSettings->primero = aux->siguiente;
+		delete aux;
+	}
+	return itemQuitar;
+}

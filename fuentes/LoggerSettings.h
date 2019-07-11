@@ -39,6 +39,10 @@ namespace ULLoggerSettings{
 	void Destroy(LoggerSettings* setting);
 
 	DateTimeFormat ObtenerDateTimeFormat(LoggerSettings* setting);
+
+	bool SinAppenderSettings(LoggerSettings* setting);
+
+	AppenderSettings* QuitarAppenderSetting(LoggerSettings* setting);
 }
 
 #endif
